@@ -18,6 +18,7 @@ private const val NUM_PAGES = 5
 class MainActivity : FragmentActivity() {
     private lateinit var mPager: ViewPager
     private var keyWord : String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,10 +32,11 @@ class MainActivity : FragmentActivity() {
         tabLayout.addTab(tabLayout.newTab().setText("옥션"));
 
         // ViewPager 움직임 설정
-        viewPager.setPageTransformer(true, ZoomOutPageTransformer())
+        mPager = viewPager
+        mPager.setPageTransformer(true, ZoomOutPageTransformer())
         // ViewPager Adapter 설정
         val adapter = ScreenSlidePagerAdapter(supportFragmentManager)
-        viewPager.adapter = adapter
+        mPager.adapter = adapter
 
 
         searchView.setOnClickListener {
@@ -64,18 +66,24 @@ class MainActivity : FragmentActivity() {
 
     }
 
+    //TODO 뒤로가기 버튼시 웹뷰만 뒤로가게하는거 구현
     override fun onBackPressed() {
-        if (mPager.currentItem == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed()
-        } else {
-            // Otherwise, select the previous step.
-            mPager.currentItem = mPager.currentItem - 1
+        if(webView.canGoBack()){
+            webView.goBack()
+        }else{
+            if (mPager.currentItem == 0) {
+                // If the user is currently looking at the first step, allow the system to handle the
+                // Back button. This calls finish() on this activity and pops the back stack.
+                super.onBackPressed()
+            } else {
+                // Otherwise, select the previous step.
+                mPager.currentItem = mPager.currentItem - 1
+            }
         }
     }
 
 
+    //ViewPager Adapter
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
         override fun getCount(): Int = NUM_PAGES
