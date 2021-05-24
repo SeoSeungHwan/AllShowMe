@@ -63,7 +63,6 @@ class MainActivity : FragmentActivity() {
             sharingIntent.putExtra(Intent.EXTRA_TEXT, "haha")
             startActivity(Intent.createChooser(sharingIntent, "Share using text"))*/
         }
-
     }
 
     //TODO 뒤로가기 버튼시 웹뷰만 뒤로가게하는거 구현
@@ -129,7 +128,5 @@ class MainActivity : FragmentActivity() {
             return POSITION_NONE
         }
     }
-
-
-
 }
+

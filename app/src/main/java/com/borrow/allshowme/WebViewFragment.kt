@@ -1,23 +1,27 @@
 package com.borrow.allshowme
 
+import android.content.ActivityNotFoundException
 import android.content.ContentValues.TAG
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
+import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_web_view.*
 import kotlinx.android.synthetic.main.fragment_web_view.view.*
+import java.net.URISyntaxException
 
 //TODO ERR_UNKNOWN_URL_SCHEME 오류 해결 
 class WebViewFragment : Fragment() {
     
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,7 +29,7 @@ class WebViewFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_web_view, container, false)
 
         //webView 세팅
-        root.webView.webViewClient = WebViewClient()
+        root.webView.webViewClient = CustomWebViewClient()
         var mWebViewSetting = root.webView.settings
         mWebViewSetting?.javaScriptEnabled =true
         mWebViewSetting?.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
@@ -49,13 +53,47 @@ class WebViewFragment : Fragment() {
         }
 
 
-
-
-
-
-
         return root
     }
 
-
+    inner class CustomWebViewClient : WebViewClient() {
+        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean
+        {
+            if(URLUtil.isNetworkUrl(url))
+            {
+                return false
+            }
+            try
+            {
+                val shareIntent= Intent()
+                shareIntent.action=Intent.ACTION_VIEW
+                shareIntent.data= Uri.parse(url)
+                startActivity(shareIntent)
+            }
+            catch(e: ActivityNotFoundException)
+            {
+            }
+            return true
+        }
+        @RequiresApi(Build.VERSION_CODES.N)
+        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean
+        {
+            val url=request?.url.toString()
+            if(URLUtil.isNetworkUrl(url))
+            {
+                return false
+            }
+            try
+            {
+                val shareIntent= Intent()
+                shareIntent.action=Intent.ACTION_VIEW
+                shareIntent.data= Uri.parse(url)
+                startActivity(shareIntent)
+            }
+            catch(e: ActivityNotFoundException)
+            {
+            }
+            return true
+        }
+    }
 }
