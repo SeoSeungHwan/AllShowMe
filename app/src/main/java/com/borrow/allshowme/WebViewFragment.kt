@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_web_view.*
 import kotlinx.android.synthetic.main.fragment_web_view.view.*
 import java.net.URISyntaxException
 
-//TODO ERR_UNKNOWN_URL_SCHEME 오류 해결 
 class WebViewFragment : Fragment() {
     
     @RequiresApi(Build.VERSION_CODES.O)
@@ -51,11 +50,10 @@ class WebViewFragment : Fragment() {
                 }
             }
         }
-
-
         return root
     }
 
+    //웹뷰 내에서 Intent 해결
     inner class CustomWebViewClient : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean
         {

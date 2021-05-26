@@ -2,6 +2,7 @@ package com.borrow.allshowme
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_web_view.*
+import kotlinx.android.synthetic.main.fragment_web_view.view.*
 
 
 private const val NUM_PAGES = 5
@@ -58,22 +60,32 @@ class MainActivity : FragmentActivity() {
 
         //TODO 공유하기 클릭시 현재 사이트 주소 알아내기
         share_btn.setOnClickListener {
-            /*val sharingIntent = Intent(Intent.ACTION_SEND)
+
+            val fragment:WebViewFragment = viewPager.adapter?.instantiateItem(viewPager,viewPager.currentItem) as WebViewFragment
+
+            val sharingIntent = Intent(Intent.ACTION_SEND)
             sharingIntent.type = "text/html"
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, "haha")
-            startActivity(Intent.createChooser(sharingIntent, "Share using text"))*/
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, fragment.webView.url.toString())
+            startActivity(Intent.createChooser(sharingIntent, "Share using text"))
         }
     }
 
     //TODO 뒤로가기 버튼시 웹뷰만 뒤로가게하는거 구현
+    var mBackWait:Long = 0
     override fun onBackPressed() {
-        if(webView.canGoBack()){
-            webView.goBack()
+
+        val fragment:WebViewFragment = viewPager.adapter?.instantiateItem(viewPager,viewPager.currentItem) as WebViewFragment
+
+        if(fragment.webView.canGoBack()){
+            fragment.webView.goBack()
         }else{
             if (mPager.currentItem == 0) {
-                // If the user is currently looking at the first step, allow the system to handle the
-                // Back button. This calls finish() on this activity and pops the back stack.
-                super.onBackPressed()
+                if(System.currentTimeMillis() - mBackWait >=2000 ) {
+                    mBackWait = System.currentTimeMillis()
+                    Toast.makeText(this,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    finish()
+                }
             } else {
                 // Otherwise, select the previous step.
                 mPager.currentItem = mPager.currentItem - 1
@@ -84,6 +96,8 @@ class MainActivity : FragmentActivity() {
 
     //ViewPager Adapter
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+
+        private var currentFragment : Fragment? = null
 
         override fun getCount(): Int = NUM_PAGES
 
@@ -97,7 +111,17 @@ class MainActivity : FragmentActivity() {
             }
             return ""
         }
+
+        override fun setPrimaryItem(container: ViewGroup, position: Int, objects: Any) {
+            if(getCurrentFragment() != objects){
+                currentFragment = objects as Fragment
+            }
+            super.setPrimaryItem(container, position, objects)
+        }
+        fun getCurrentFragment() : Fragment? = currentFragment
+
         override fun getItem(position: Int): Fragment {
+
             val fragment = WebViewFragment()
             val bundle =Bundle(1)
             when(position){
@@ -127,6 +151,7 @@ class MainActivity : FragmentActivity() {
         override fun getItemPosition(`object`: Any): Int {
             return POSITION_NONE
         }
+
     }
 }
 
