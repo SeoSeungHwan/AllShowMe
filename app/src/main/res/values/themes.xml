@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.AllShowMe" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/light_gray</item>
-        <item name="colorPrimaryVariant">@color/light_gray</item>
+        <item name="colorPrimary">@color/main</item>
+        <item name="colorPrimaryVariant">@color/main</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,5 +12,14 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="TabTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/main</item>                                <!-- 배경 -->
+
+        <item name="android:textColorPrimary">@color/white</item>       <!-- 탭바 선택된 텍스트 -->
+        <item name="android:textColorSecondary">@color/black</item>     <!-- 탭바 텍스트 -->
+
+        <item name="colorAccent">@color/white</item>                    <!-- 하단 움직이는 바 색-->
     </style>
 </resources>
