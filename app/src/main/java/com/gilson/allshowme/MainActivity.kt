@@ -1,4 +1,4 @@
-package com.borrow.allshowme
+package com.gilson.allshowme
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_web_view.*
-import kotlinx.android.synthetic.main.fragment_web_view.view.*
 
 
 private const val NUM_PAGES = 5
@@ -82,7 +81,7 @@ class MainActivity : FragmentActivity() {
             if (mPager.currentItem == 0) {
                 if(System.currentTimeMillis() - mBackWait >=2000 ) {
                     mBackWait = System.currentTimeMillis()
-                    Toast.makeText(this,"뒤로가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     finish()
                 }

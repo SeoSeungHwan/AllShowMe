@@ -1,22 +1,17 @@
-package com.borrow.allshowme
+package com.gilson.allshowme
 
 import android.content.ActivityNotFoundException
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import androidx.annotation.RequiresApi
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.fragment_web_view.*
 import kotlinx.android.synthetic.main.fragment_web_view.view.*
-import java.net.URISyntaxException
 
 class WebViewFragment : Fragment() {
     

@@ -1,4 +1,4 @@
-package com.borrow.allshowme
+package com.gilson.allshowme
 
 import android.view.View
 import androidx.viewpager.widget.ViewPager
